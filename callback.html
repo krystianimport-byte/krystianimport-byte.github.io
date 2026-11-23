@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login callback — Five Star Clips</title>
+<meta name="robots" content="noindex">
+<style>
+  body { margin:0; background:#1a0b2e; color:#f4eefc; font:17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width:640px; margin:0 auto; padding:48px 16px; }
+  code { display:block; background:#2a1450; padding:14px; border-radius:10px; word-break:break-all; margin:12px 0; }
+  button { background:#ff2d87; color:#fff; border:0; border-radius:10px; padding:10px 18px; font-size:16px; cursor:pointer; }
+  .err { color:#ff8fb8; }
+</style>
+</head>
+<body>
+<main>
+  <h1>★ Five Star Clips — login</h1>
+  <div id="out"></div>
+</main>
+<script>
+  // Strona tylko WYŚWIETLA jednorazowy kod z adresu (nic nie wysyła ani nie zapisuje).
+  const p = new URLSearchParams(location.search);
+  const out = document.getElementById("out");
+  const code = p.get("code"), err = p.get("error") || p.get("error_description");
+  if (code) {
+    out.innerHTML = '<p>Copy this one-time code and paste it into the terminal:</p><code id="c"></code>' +
+                    '<button id="b">Copy</button>';
+    document.getElementById("c").textContent = code;
+    document.getElementById("b").onclick = () => {
+      navigator.clipboard.writeText(code).then(() => { document.getElementById("b").textContent = "Copied ✓"; });
+    };
+  } else if (err) {
+    out.innerHTML = '<p class="err">Login error:</p><code id="c"></code>';
+    document.getElementById("c").textContent = err;
+  } else {
+    out.innerHTML = "<p>No code in the address. Start the login from the terminal again.</p>";
+  }
+</script>
+</body>
+</html>
